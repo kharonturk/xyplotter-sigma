@@ -21,6 +21,7 @@ volatile uint64_t count = 0;
 ISR(INT4_vect)
 {
     count++;   
+    PORTA = count;
 }
 
 int main(void)
@@ -45,6 +46,8 @@ void port_init()
     DDRE &= ~(1<<PE4); // for external interrupt;
     DDRE |= (1<<PE1);  // for uart tx
     DDRE &= ~(1<<PE0); // for uart rx
+    DDRA = 0xff;       // for led;
+    PORTA = 0;
 }
 
 void ext_intr_init()
