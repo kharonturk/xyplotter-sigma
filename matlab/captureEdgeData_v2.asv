@@ -2,18 +2,14 @@ function img = captureEdgeData_v2()
 
 MASK_SIZE = 5;
 BINARY_BW = 0.5;%mean percent of black
-COMPORT = 'COM2';
-BaudRate = 115200;
 
-vid = videoinput('winvideo', 1, 'YUY2_320x240');%Modify as computer
+vid = videoinput('winvideo', 1, 'YUY2_320x240');
 R = 240;
 C = 320;
 
 signal = 1;
 mask = 1/(MASK_SIZE^2).*ones(MASK_SIZE);
-s1 = serial(COMPORT, 'BaudRate', BaudRate);
-fopen(s1);
-
+s1 = serial('COM2')
 while(1)
     if(signal)
         img = getsnapshot(vid);
@@ -42,15 +38,13 @@ while(1)
         axis square;
     end
     
-    reply = fscanf(s1);
-    if reply == '1'
+    reply = input('Continue?','s');
+    if reply == 'y'
         signal = 1;
         continue;
-    elseif reply == '0'
+    elseif reply == 'n'
         break;
     else
         signal = 0;
     end
 end
-
-fclose(s1);
