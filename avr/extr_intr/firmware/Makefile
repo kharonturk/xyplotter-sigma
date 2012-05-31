@@ -19,7 +19,7 @@
 
 DEVICE     = atmega128
 CLOCK      = 16000000
-PROGRAMMER = #-c stk500v2 -P avrdoper
+PROGRAMMER = -c stk500v2 -P /dev/cu.usbserial-FTTLE5CL
 OBJECTS    = main.o
 FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m
 
