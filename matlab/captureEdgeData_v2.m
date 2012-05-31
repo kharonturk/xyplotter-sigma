@@ -6,8 +6,7 @@ COMPORT = 'COM2';
 BaudRate = 115200;
 
 vid = videoinput('winvideo', 1, 'YUY2_320x240');%Modify as computer
-R = 240;
-C = 320;
+[R C] = get(vid, 'VideoResolution');
 
 signal = 1;
 mask = 1/(MASK_SIZE^2).*ones(MASK_SIZE);
@@ -26,20 +25,24 @@ while(1)
             end
         end
         
-        corners = corner(img_bw_new, 10000000);
+        %         corners = corner(img_bw_new, 10000000);
         img_edge = edge(img_bw_new, 'canny', [0.04 0.4], 2);
         
-        subplot(231);imshow(img);
-        subplot(232);imshow(img_bw);
-        subplot(233);imshow(img_bw_new);
-        subplot(234);imshow(uint8(img_bw_new).*100+100);
-        hold on; plot(corners(:,1), corners(:,2), 'r.');
-        subplot(235);imshow(img_edge);
-        
-        subplot(236);
+        %         subplot(231);imshow(img);
+        %         subplot(232);imshow(img_bw);
+        %         subplot(233);imshow(img_bw_new);
+        %         subplot(234);imshow(uint8(img_bw_new).*100+100);
+        %         hold on; plot(corners(:,1), corners(:,2), 'r.');
+        %         subplot(235);imshow(img_edge);
+        %
+        %         subplot(236);
         point = find_pt(img_edge);
-        drawline(point);
-        axis square;
+        %         fwrite(s1,point);
+        %         fprintf(s1, '%d %d %d\n',[point(:,1) point(:,2) point(:,3)]);
+        %           i can't sure whether this code is work properly.
+        
+        %         drawline(point);
+        %         axis square;
     end
     
     reply = fscanf(s1);
