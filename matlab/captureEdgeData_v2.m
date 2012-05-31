@@ -6,8 +6,7 @@ COMPORT = 'COM2';
 BaudRate = 115200;
 
 vid = videoinput('winvideo', 1, 'YUY2_320x240');%Modify as computer
-R = 240;
-C = 320;
+[R C] = get(vid, 'VideoResolution');
 
 signal = 1;
 mask = 1/(MASK_SIZE^2).*ones(MASK_SIZE);
