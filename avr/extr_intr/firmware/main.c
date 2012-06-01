@@ -10,10 +10,12 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 
+#define dir_factor(x) ( (x)? 8:5)
+
 typedef struct motor
 {
     unsigned char dir;
-    unsigned char speed; // 1 is slowest 254 is fastest
+    int speed; // 1 is slowest 254 is fastest
 } Motor;
 
 void port_init();
@@ -33,6 +35,30 @@ ISR(INT4_vect)
     PORTA = count;
 }
 
+ISR(USART1_RX_vect)
+{
+    unsigned char c;
+    c = UDR1;
+
+    if( c == '5')
+    {
+        motorA.speed = 0;
+    }
+    else if ( c > '5')
+        motorA.speed += motorA.dir? 10:-10;
+    else
+        motorA.speed += motorA.dir? -10:10;
+
+    if( motorA.speed < 0)
+    {
+        motorA.dir = !motorA.dir;
+        motorA.speed = -motorA.speed;
+    }
+    else if ( motorA.speed > 255)
+        motorA.speed = 255;
+
+}
+
 ISR(TIMER0_COMP_vect)
 {
     PORTC ^= (1<<0);
@@ -40,7 +66,6 @@ ISR(TIMER0_COMP_vect)
 
 ISR(TIMER0_OVF_vect)
 {
-    motorA.speed++;
     OCR0 = motorA.speed;
     if( motorA.dir)
     {
@@ -67,9 +92,15 @@ int main(void)
     for(;;)
     {
         _delay_ms(100);
-//        OCR0+=10;
-        printf("%d is interrupt count \r\n", count);
+    //    printf("%d is interrupt count \r\n", count);
         /* insert your main loop code here */
+        printf("%d is interrupt count \r\n", count);
+        if( count * dir_factor(motorA.dir) > 100 <<  3)
+        {
+            count = 0;
+            motorA.dir = !motorA.dir;
+        }
+
     }
     return 0;   /* never reached */
 }
@@ -93,7 +124,7 @@ void ext_intr_init()
 
 void uart_init()
 {
-    UCSR1B |= (1<<TXEN);
+    UCSR1B |= (1<<TXEN) | (1<<RXEN) | (1<<RXCIE1);
     UBRR1L = 8;
     fdevopen(putChar,0);
 }
