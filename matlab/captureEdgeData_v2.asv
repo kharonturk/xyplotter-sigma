@@ -1,9 +1,7 @@
-function point = captureEdgeData_v2()
+function point = find_cam_edge_pt()
 
 MASK_SIZE = 5;
 BINARY_BW = 0.5;%mean percent of black
-COMPORT = 'COM13';
-BaudRate = 115200;
 
 vid = videoinput('winvideo', 2, 'RGB24_320x240');%Modify as computer
 size = get(vid, 'VideoResolution');
@@ -17,7 +15,6 @@ s1 = serial(COMPORT, 'BaudRate', BaudRate);
 fopen(s1);
 
 while(1)
-    try
         if(signal)
             img = getsnapshot(vid);
             img_bw = im2bw(img, BINARY_BW);
@@ -33,20 +30,6 @@ while(1)
             point = find_pt(img_edge);
             
         end
-        
-        reply = fscanf(s1);
-        if reply == '1'
-            signal = 1;
-            continue;
-        elseif reply == '0'
-            break;
-        else
-            signal = 0;
-        end
-    catch
-        display('Error ');
-        fclose(s1);
-    end
 end
 
 fclose(s1);
