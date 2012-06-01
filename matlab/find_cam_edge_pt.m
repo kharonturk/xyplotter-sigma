@@ -12,8 +12,8 @@ mask = 1/(MASK_SIZE^2).*ones(MASK_SIZE);
 if(start)
     try
         img = getsnapshot(vid);
-    catch
-        display('Capture Webcam Error');
+    catch err
+        display(err);
     end
     img_bw = im2bw(img, BINARY_BW);
     
