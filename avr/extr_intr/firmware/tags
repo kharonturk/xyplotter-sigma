@@ -1,0 +1,40 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+-format	Makefile	/^	avr-size --format=avr --mcu=$(DEVICE) main.elf$/;"	m
+AVRDUDE	Makefile	/^AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)$/;"	m
+CLOCK	Makefile	/^CLOCK      = 16000000$/;"	m
+COMPILE	Makefile	/^COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)$/;"	m
+DEVICE	Makefile	/^DEVICE     = atmega128$/;"	m
+FUSES	Makefile	/^FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m$/;"	m
+ISR	main.c	/^ISR(INT4_vect)$/;"	f
+ISR	main.c	/^ISR(TIMER0_COMP_vect)$/;"	f
+ISR	main.c	/^ISR(TIMER0_OVF0_vect)$/;"	f
+Motor	main.c	/^} Motor;$/;"	t	typeref:struct:motor	file:
+OBJECTS	Makefile	/^OBJECTS    = main.o$/;"	m
+PROGRAMMER	Makefile	/^PROGRAMMER = -c stk500v2 -P \/dev\/cu.usbserial-FTTLE5CL$/;"	m
+count	main.c	/^volatile uint64_t count = 0;$/;"	v
+dir	main.c	/^    unsigned char dir;$/;"	m	struct:motor	file:	access:public
+ext_intr_init	main.c	/^void ext_intr_init()$/;"	f
+ext_intr_init	main.c	/^void ext_intr_init();$/;"	p	file:
+main	main.c	/^int main(void)$/;"	f	signature:(void)
+motor	main.c	/^typedef struct motor$/;"	s	file:
+motor::dir	main.c	/^    unsigned char dir;$/;"	m	struct:motor	file:	access:public
+motor::speed	main.c	/^    unsigned char speed; \/\/ 1 is slowest 254 is fastest$/;"	m	struct:motor	file:	access:public
+motorA	main.c	/^volatile Motor motorA;$/;"	v
+motor_init	main.c	/^void motor_init()$/;"	f
+motor_init	main.c	/^void motor_init();$/;"	p	file:
+port_init	main.c	/^void port_init()$/;"	f
+port_init	main.c	/^void port_init();$/;"	p	file:
+putChar	main.c	/^int putChar(char data, FILE* f)$/;"	f	signature:(char data, FILE* f)
+putChar	main.c	/^int putChar(char data, FILE* f);$/;"	p	file:	signature:(char data, FILE* f)
+speed	main.c	/^    unsigned char speed; \/\/ 1 is slowest 254 is fastest$/;"	m	struct:motor	file:	access:public
+timer_init	main.c	/^void timer_init()$/;"	f
+timer_init	main.c	/^void timer_init();$/;"	p	file:
+uart_init	main.c	/^void uart_init()$/;"	f
+uart_init	main.c	/^void uart_init();$/;"	p	file:
+uart_transmit	main.c	/^void uart_transmit(unsigned char data)$/;"	f	signature:(unsigned char data)
+uart_transmit	main.c	/^void uart_transmit(unsigned char data);$/;"	p	file:	signature:(unsigned char data)
