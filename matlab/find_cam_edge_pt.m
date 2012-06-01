@@ -10,4 +10,6 @@ if(start)
     end
     img_edge = image_processing(img);
     point = find_pt(img_edge);    
+else
+    point = [];
 end

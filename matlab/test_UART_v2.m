@@ -1,4 +1,4 @@
-function captureEdgeData_v2()
+function test_UART_v2()
 % start interrupt : 1(%d)
 % require point information interrupt : 2(%d)
 
@@ -29,7 +29,11 @@ while(point_empty)
     
     
     try
-        point = find_cam_edge_pt(start);
+        if(start)
+            point = [randi(2,10,1)-1, randi(2,10,1)-1, randi(2,10,1)-1];
+        else
+            point = [];
+        end
         point_empty = 0;%isempty(point);
     catch err
         display(err);
