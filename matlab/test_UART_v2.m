@@ -4,7 +4,7 @@ function test_UART_v2()
 
 COMPORT = 'COM13';
 BaudRate = 115200;
-DATA_NUM = 10;
+DATA_NUM = 1;
 
 fclose('all');
 s1 = serial(COMPORT, 'BaudRate', BaudRate);
@@ -19,18 +19,19 @@ while(point_empty)
         % fprintf('%s\n','1')
     catch err
         display(err);
+        fclose(s1);
+        break;
     end
-    
+    display('Passed first block!');
     if reply == 1
         start = 1;
     else
         start = 0;
     end
-    
-    
+    display('Passed second block!');
     try
         if(start)
-            point = [randi(2,10,1)-1, randi(2,10,1)-1, randi(2,10,1)-1];
+            point = [randi(2,15,1)-1, randi(2,15,1)-1, randi(2,15,1)-1];
         else
             point = [];
         end
@@ -38,19 +39,29 @@ while(point_empty)
     catch err
         display(err);
         fclose(s1);
+        break;
     end
-    
+    display('Passed third block!');
     % require point information interrupt
-    % 
+    %
     point = point';
     while(~point_empty)
         interrupt = fscanf(s1,'%d\n');
         if interrupt == 2
-            fprintf(s1, '%d %d %d\n', point(:,1:DATA_NUM));
+            try
+                fprintf(s1, '%d %d %d\n', point(:,1:DATA_NUM));
+            catch err
+                display(err);
+                fclose(s1);
+                break;
+            end
             point = point(:,DATA_NUM+1:end);
             point_empty = isempty(point);
         end
+        display('Received Interrupt!');
     end
+    break;
 end
 
 fclose(s1);
+delete(s1);
