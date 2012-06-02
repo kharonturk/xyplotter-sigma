@@ -1,6 +1,6 @@
 function img_edge = image_processing(img_original, debug)
 if nargin == 1
-    debug = 0;
+    debug = '';
 end
 
 MASK_SIZE = 5;
@@ -32,7 +32,7 @@ img_bw_edge = edge(img_bw_new, 'canny', [0.04 0.4], 2);
 
 point = find_pt(img_edge);
 
-if debug
+if strcmp(debug,'DEBUG')
     subplot(231);imshow(img);
     subplot(232);imshow(img_bw);
     subplot(233);imshow(img_bw_new);

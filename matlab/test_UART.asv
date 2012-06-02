@@ -45,21 +45,18 @@ elseif(version == 3)
         end
     end
 elseif(version == 4)
-    for i=1:3
-        try
-            re = fscanf(s,'%d\n');
-            if re == 1
-                display('1 received!');
-                fprintf(s,'%d\n',1);
-            else
-                display(re);
-                display(' received!');
-                fprintf(s,'%d\n',re);
-            end
-        catch err
-            display(err);
-            fclose(s);
+    try
+        re = fscanf(s,'%d\n');
+        if re == 1
+            display('1 received!');
+            f
+        else
+            display(re);
+            display(' received!');
         end
+    catch err
+        display(err);
+        fclose(s);
     end
 end
 

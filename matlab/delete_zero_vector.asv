@@ -1,8 +1,10 @@
 function pt_out = delete_zero_vector(pt)
 
 zero_vector = ~(pt(:,1)|pt(:,2)|pt(:,3));
-idx = find(zero_vector == 1);
 [R C] = size(pt);
+pt_out = zeros(R-sum(zero_vector), C);
 
 for i=1:R
-    
+    if(zero_vector(i))
+        pt_out = 
+end
