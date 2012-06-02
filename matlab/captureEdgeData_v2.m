@@ -13,6 +13,7 @@ fopen(s1);
 point_empty = 1;%default value
 
 while(point_empty)
+    % start captureEdgeData
     try
         reply = fscanf(s1, '%d\n');
         % please send data with a format fprintf('%d\n',1) or
@@ -20,14 +21,14 @@ while(point_empty)
     catch err
         display(err);
     end
-    
+
     if reply == 1
         start = 1;
     else
         start = 0;
     end
     
-    
+    % find point from cam
     try
         point = find_cam_edge_pt(start);
         point_empty = 0;%isempty(point);
@@ -36,8 +37,10 @@ while(point_empty)
         fclose(s1);
     end
     
+    % sampling point data to reduce information
+    point = sampling(point);
+    
     % require point information interrupt
-    % 
     point = point';
     while(~point_empty)
         interrupt = fscanf(s1,'%d\n');

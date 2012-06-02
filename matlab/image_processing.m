@@ -38,5 +38,5 @@ if debug
     subplot(233);imshow(img_bw_new);
     subplot(234);imshow(img_edge);
     subplot(235);imshow(img_bw_edge);
-    subplot(236);drawline(point);
+    subplot(236);point = sampling(point);drawline(point);
 end
