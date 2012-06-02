@@ -1,6 +1,9 @@
-function test_UART_v2()
+function test_UART_v2(debug)
 % start interrupt : 1(%d)
 % require point information interrupt : 2(%d)
+if nargin==0
+    debug = '';
+end
 
 COMPORT = 'COM13';
 BaudRate = 115200;
@@ -25,19 +28,24 @@ while(point_empty)
             fclose(s1);
             break;
         end
-        display(reply);
+        if(strcmp(debug, 'DEBUG'))display(reply);end
         if reply == 1
             start = 1;
-            display('Started.');
+            if(strcmp(debug, 'DEBUG'))display('Started.');end
         elseif reply == 2
-            fprintf(s1, '%d\n', 0);
-            display('Please press 1.');
+            try
+                fprintf(s1, '%s\n', '0 0 0');
+            catch err
+                display(err);
+                fclose(s1);
+            end
+            if(strcmp(debug, 'DEBUG'))display('Please press 1.');end
         end
     end
-    display('Passed first block!');
+    if(strcmp(debug, 'DEBUG'))display('Passed first block!');end
     try
         if(start)
-            point = randi(2,15,1)-1;%, randi(2,15,1)-1, randi(2,15,1)-1];
+            point = [randi(4,15,1)-1, randi(4,15,1)-1, randi(4,15,1)-1];
             display(point);
         else
             point = [];
@@ -48,23 +56,23 @@ while(point_empty)
         fclose(s1);
         break;
     end
-    display('Passed second block!');
+    if(strcmp(debug, 'DEBUG'))display('Passed second block!');end
     % require point information interrupt
     %
     point = point';
     while(~point_empty)
         try
             interrupt = fscanf(s1,'%d\n');
-            display(interrupt);
-            display('Received Interrupt!');
-            
+            if(strcmp(debug, 'DEBUG'))display(interrupt);end
+            if(strcmp(debug, 'DEBUG'))display('Received Interrupt!');end
+
             if (interrupt == 2)
-                fprintf(s1, '%d\n', point(1:DATA_NUM));
-                display('Send Led Data!');
-                
-                point = point(DATA_NUM+1:end);
+                fprintf(s1, '%d\n', point(:, 1:DATA_NUM));
+                if(strcmp(debug, 'DEBUG'))display('Send Led Data!');end
+
+                point = point(:, DATA_NUM+1:end);
                 point_empty = isempty(point);
-                display(point_empty);
+                if(strcmp(debug, 'DEBUG'))display(point_empty);end
             end
         catch err
             display(err);

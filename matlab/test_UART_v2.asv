@@ -30,15 +30,14 @@ while(point_empty)
             start = 1;
             display('Started.');
         elseif reply == 2
-            start = 0;
-        else
-            start = 0;
+            fprintf(s1, '%d %d %d\n', 0, 0, 0);
+            display('Please press 1.');
         end
     end
     display('Passed first block!');
     try
         if(start)
-            point = randi(2,15,1)-1;%, randi(2,15,1)-1, randi(2,15,1)-1];
+            point = [randi(2,15,1)-1, randi(2,15,1)-1, randi(2,15,1)-1];
             display(point);
         else
             point = [];
@@ -58,11 +57,11 @@ while(point_empty)
             interrupt = fscanf(s1,'%d\n');
             display(interrupt);
             display('Received Interrupt!');
-            
+
             if (interrupt == 2)
-                fprintf(s1, '%d\n', point(1:DATA_NUM));
+                fprintf(s1, '%d %d %d\n', point(:, 1:DATA_NUM));
                 display('Send Led Data!');
-                
+
                 point = point(DATA_NUM+1:end);
                 point_empty = isempty(point);
                 display(point_empty);

@@ -20,7 +20,7 @@
 unsigned char send = '0';
 unsigned char buffer[BUFFER_LENGTH] = {0,};
 
-
+int a, b, c;
 /******************************
         Initialization function
 *******************************/
@@ -55,8 +55,7 @@ unsigned char RxChar(void)
 }
 void turnLED(unsigned char* buffer)
 {
-	char a = buffer[0];
-	PORTC = a-47;
+	PORTC = (a<<0)|(b<<2)|(c<<4);
 }
 
 static FILE myStream = FDEV_SETUP_STREAM(TxChar, RxChar, _FDEV_SETUP_RW);
@@ -84,9 +83,6 @@ int main(void)
         return 0;
 }
 
-
-
-
 /**************************
         interrupt function
 ***************************/
@@ -98,5 +94,5 @@ SIGNAL(SIG_INTERRUPT7)
 SIGNAL(SIG_INTERRUPT6)
 {
         fprintf(&myStream,"%d\n",2);
-        fscanf(&myStream, "%s", buffer);
+        fscanf(&myStream, "%d %d %d", &a, &b, &c);
 }
