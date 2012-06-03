@@ -1,13 +1,12 @@
-function test_UART_v2(debug)
+function test_UART_v3(DATA_NUM, debug)
 % start interrupt : 1(%d)
 % require point information interrupt : 2(%d)
-if nargin==0
+if nargin == 1
     debug = '';
 end
 
 COMPORT = 'COM13';
 BaudRate = 115200;
-DATA_NUM = 1;
 
 fclose('all');
 s1 = serial(COMPORT, 'BaudRate', BaudRate);
@@ -18,6 +17,10 @@ start = 0;
 point_empty = 1;%default value
 
 while(point_empty)
+    
+    %
+    % Press the button to take a Picture.
+    %
     while(~start)
         try
             reply = fscanf(s1, '%d\n');
@@ -34,7 +37,8 @@ while(point_empty)
             if(strcmp(debug, 'DEBUG'))display('Started.');end
         elseif reply == 2
             try
-                fprintf(s1, '%s\n', '0 0 0');
+                dummy = zeros(3,DATA_NUM);
+                fprintf(s1, '%d\n', dummy);
             catch err
                 display(err);
                 fclose(s1);
@@ -43,9 +47,13 @@ while(point_empty)
         end
     end
     if(strcmp(debug, 'DEBUG'))display('Passed first block!');end
+    
+    %
+    % Take a Picture and find point data.
+    %
     try
         if(start)
-            point = [randi(4,15,1)-1, randi(4,15,1)-1, randi(4,15,1)-1];
+            point = [randi(2,15,1)-1, randi(2,15,1)-1, randi(2,15,1)-1];
             display(point);
         else
             point = [];
@@ -57,7 +65,10 @@ while(point_empty)
         break;
     end
     if(strcmp(debug, 'DEBUG'))display('Passed second block!');end
-    % require point information interrupt
+    
+    
+    %
+    % Send a Data Packet as occuring Interrupt.
     %
     point = point';
     while(~point_empty)
@@ -67,10 +78,19 @@ while(point_empty)
             if(strcmp(debug, 'DEBUG'))display('Received Interrupt!');end
 
             if (interrupt == 2)
-                fprintf(s1, '%d\n', point(:, 1:DATA_NUM));
-                led = sprintf('%d\n', point(:, 1:DATA_NUM));
-                if(strcmp(debug, 'DEBUG'))display('Send Led Data! : ');display(led);end
-
+                if(size(point,2) < DATA_NUM)
+                    zero = zeros(3, DATA_NUM - size(point,2));%fill insufficient data packet to zeros.
+                    point_end = [point zero];
+                    fprintf(s1, '%d\n', point_end(:, 1:end));
+                    led = point_end(:, 1:end);
+                else
+                    fprintf(s1, '%d\n', point(:, 1:DATA_NUM));
+                    led = point(:, 1:DATA_NUM);
+                end
+                if(strcmp(debug, 'ONETIME') || strcmp(debug, 'DEBUG'))
+                    display('Send Led Data! : ');display(led);
+                end
+                
                 point = point(:, DATA_NUM+1:end);
                 point_empty = isempty(point);
                 if(strcmp(debug, 'DEBUG'))display(point_empty);end
@@ -82,8 +102,10 @@ while(point_empty)
         end
     end
     display('Passed all block! give me a 1');
+
+
     start = 0;
-    if(strcmp(debug, 'DEBUG'))break;end
+    if(strcmp(debug, 'ONETIME') || strcmp(debug, 'DEBUG'))break;end
 end
 
 fclose(s1);

@@ -10,20 +10,24 @@
                 BAUD 115200
                 FOSC 14.7456
 ****************************/
-#define BUFFER_LENGTH 100
-
+#define DATA_NUM 7 //The number of data packet : one packet = [1 3] matrix
 
 
 /*************************
         global variables
 *************************/
-unsigned char send = '0';
-unsigned char buffer[BUFFER_LENGTH] = {0,};
+int arr[100][3];//packer buffer
+int idx = 0;//buffer index
 
-int a, b, c;
+
 /******************************
         Initialization function
 *******************************/
+void InitPort(void)
+{
+	    DDRC = 0xff;//LED
+		DDRE = 0x02;//UART & EXTERNAL INTERRUPT
+}
 void InitUART(void)
 {
         UBRR0L=7;
@@ -33,11 +37,14 @@ void InitUART(void)
 }
 void InitINT(void)
 {
-        EICRB |= (1<<ISC70);
+        EICRB |= (1<<ISC71);
         EIMSK |= (1<<INT7);
 
-        EICRB |= (1<<ISC60);
+        EICRB |= (1<<ISC61);
         EIMSK |= (1<<INT6);
+
+        EICRB |= (1<<ISC51);
+        EIMSK |= (1<<INT5);
 }
 
 /***********************
@@ -53,10 +60,6 @@ unsigned char RxChar(void)
         while(!(UCSR0A&(1<<RXC0)));
         return UDR0;
 }
-void turnLED(unsigned char* buffer)
-{
-	PORTC = (a<<0)|(b<<2)|(c<<4);
-}
 
 static FILE myStream = FDEV_SETUP_STREAM(TxChar, RxChar, _FDEV_SETUP_RW);
 
@@ -65,20 +68,17 @@ static FILE myStream = FDEV_SETUP_STREAM(TxChar, RxChar, _FDEV_SETUP_RW);
 *******************************/
 int main(void)
 {
+		InitPort();
         InitUART();
-        InitINT();
-        
-        DDRC = 0xff;
-		PORTC = 0xff;
-		_delay_ms(50);
+        InitINT();	
+      
+		PORTC = 0xff;//just verify reset
+        _delay_ms(50);
         PORTC = 0x00;
 
-		DDRE = 0x02;
-
         sei();
-        while(1){
-			turnLED(buffer);
-		}
+
+        while(1);
 
         return 0;
 }
@@ -93,6 +93,19 @@ SIGNAL(SIG_INTERRUPT7)
 
 SIGNAL(SIG_INTERRUPT6)
 {
-        fprintf(&myStream,"%d\n",2);
-        fscanf(&myStream, "%d %d %d", &a, &b, &c);
+	int i=0;
+    fprintf(&myStream,"%d\n",2);
+
+	for(i = 0 ; i < DATA_NUM; i++)
+	        fscanf(&myStream, "%d %d %d", &arr[i][0], &arr[i][1], &arr[i][2]);
+	idx=0;
+}
+SIGNAL(SIG_INTERRUPT5)
+{
+	if(idx < DATA_NUM)
+		PORTC = (arr[idx][0]<<0)|(arr[idx][1]<<1)|(arr[idx][2]<<2);
+	else
+		PORTC = 0x00;
+	
+	idx++;
 }
