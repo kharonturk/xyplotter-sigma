@@ -1,55 +1,114 @@
-function captureEdgeData_v2()
+function captureEdgeData_v2(DATA_NUM, debug)
 % start interrupt : 1(%d)
 % require point information interrupt : 2(%d)
+if nargin == 1
+    debug = '';
+end
 
 COMPORT = 'COM13';
 BaudRate = 115200;
-DATA_NUM = 10;
 
 fclose('all');
 s1 = serial(COMPORT, 'BaudRate', BaudRate);
 fopen(s1);
+set(s1, 'Timeout',60);
 
+start = 0;
 point_empty = 1;%default value
 
 while(point_empty)
-    % start captureEdgeData
-    try
-        reply = fscanf(s1, '%d\n');
-        % please send data with a format fprintf('%d\n',1) or
-        % fprintf('%s\n','1')
-    catch err
-        display(err);
-    end
-
-    if reply == 1
-        start = 1;
-    else
-        start = 0;
-    end
     
-    % find point from cam
+    %
+    % Press the button to take a Picture.
+    %
+    while(~start)
+        try
+            reply = fscanf(s1, '%d\n');
+            % please send data with a format fprintf('%d\n',1) or
+            % fprintf('%s\n','1')
+        catch err
+            display(err);
+            fclose(s1);
+            break;
+        end
+        if(strcmp(debug, 'DEBUG'))display(reply);end
+        if reply == 1
+            start = 1;
+            if(strcmp(debug, 'DEBUG'))display('Started.');end
+        elseif reply == 2
+            try
+                dummy = zeros(3,DATA_NUM);
+                fprintf(s1, '%d\n', dummy);
+            catch err
+                display(err);
+                fclose(s1);
+            end
+            if(strcmp(debug, 'DEBUG'))display('Please press 1.');end
+        end
+    end
+    if(strcmp(debug, 'DEBUG'))display('Passed first block!');end
+    
+    %
+    % Take a Picture and find point data.
+    %
     try
-        point = find_cam_edge_pt(start);
-        point_empty = 0;%isempty(point);
+        if(start)
+            point = find_cam_edge_pt(start);
+            display(point);
+        else
+            point = [];
+        end
+        point_empty = isempty(point);
     catch err
         display(err);
         fclose(s1);
+        break;
     end
+    if(strcmp(debug, 'DEBUG'))display('Passed second block!');end
     
     % sampling point data to reduce information
     point = sampling(point);
     
-    % require point information interrupt
+    %
+    % Send a Data Packet as occuring Interrupt.
+    %
     point = point';
     while(~point_empty)
-        interrupt = fscanf(s1,'%d\n');
-        if interrupt == 2
-            fprintf(s1, '%d %d %d\n', point(:,1:DATA_NUM));
-            point = point(:,DATA_NUM+1:end);
-            point_empty = isempty(point);
+        try
+            interrupt = fscanf(s1,'%d\n');
+            if(strcmp(debug, 'DEBUG'))display(interrupt);end
+            if(strcmp(debug, 'DEBUG'))display('Received Interrupt!');end
+
+            if (interrupt == 2)
+                if(size(point,2) < DATA_NUM)
+                    zero = zeros(3, DATA_NUM - size(point,2));%fill insufficient data packet to zeros.
+                    point_end = [point zero];
+                    fprintf(s1, '%d\n', point_end(:, 1:end));
+                    led = point_end(:, 1:end);
+                else
+                    fprintf(s1, '%d\n', point(:, 1:DATA_NUM));
+                    led = point(:, 1:DATA_NUM);
+                end
+                if(strcmp(debug, 'ONETIME') || strcmp(debug, 'DEBUG'))
+                    display('Send Led Data! : ');display(led);
+                end
+                
+                point = point(:, DATA_NUM+1:end);
+                point_empty = isempty(point);
+                if(strcmp(debug, 'DEBUG'))display(point_empty);end
+            end
+        catch err
+            display(err);
+            fclose(s1);
+            break;
         end
     end
+    display('Passed all block! give me a 1');
+
+
+    start = 0;
+    if(strcmp(debug, 'ONETIME') || strcmp(debug, 'DEBUG'))break;end
 end
 
 fclose(s1);
+delete(s1);

@@ -58,7 +58,7 @@ while(point_empty)
         else
             point = [];
         end
-        point_empty = 0;%isempty(point);
+        point_empty = isempty(point);
     catch err
         display(err);
         fclose(s1);

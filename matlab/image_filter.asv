@@ -1,0 +1,137 @@
+function image_filter(varargin)
+%IMAGE_FILTER Create filter passed image using predefined 2-D filters.
+%   IMG = FSPECIAL(TYPE) creates a image passed two-dimensional filter of the
+%   specified type. Possible values for TYPE are:
+%
+%     'gaussian'  Gaussian lowpass filter
+%     'median'    median lowpass filter
+%     'unsharp'   unsharp contrast enhancement filter
+%
+%   Depending on TYPE, IMAGE_FILTER may take additional parameters
+%   which you can supply.  These parameters all have default
+%   values. 
+%
+%   IMG = IMAGE_FILTER('gaussian',HSIZE,SIGMA) returns a rotationally
+%   symmetric Gaussian lowpass filter  of size HSIZE with standard
+%   deviation SIGMA (positive). HSIZE can be a vector specifying the
+%   number of rows and columns in H or a scalar, in which case H is a
+%   square matrix.
+%   The default HSIZE is [3 3], the default SIGMA is 0.5.
+%
+%   IMG = IMAGE_FILTER('median',HSIZE) returns a median lowpass filter 
+%   of size HSIZE. HSIZE can be a vector specifying the
+%   number of rows and columns in H or a scalar, in which case H is a
+%   square matrix.
+%   The default HSIZE is [3 3].
+%
+%   IMG = IMAGE_FILTER('unsharp',ALPHA) returns a 3-by-3 unsharp contrast
+%   enhancement filter. FSPECIAL creates the unsharp filter from the
+%   negative of the Laplacian filter with parameter ALPHA. ALPHA controls
+%   the shape of the Laplacian and must be in the range 0.0 to 1.0.
+%   The default ALPHA is 0.2.
+%
+%   Copyright 2012 LSI
+%   $Date: 2012/06/07 22:02:04 $
+
+[type, p2, p3] = ParseInputs(varargin{:});
+switch type
+    case 'gaussian'
+        H = fspecial('gaussian',p2,p3);
+end
+
+%%%
+%%% ParseInputs
+%%%
+function [type, p2, p3] = ParseInputs(varargin)
+
+% default values
+type      = '';
+p2        = [];
+p3        = [];
+
+% Check the number of input arguments.
+iptchecknargin(1,3,nargin,mfilename);
+
+% Determine filter type from the user supplied string.
+type = varargin{1};
+type = iptcheckstrs(type,{'gaussian','unsharp','median'},mfilename,'TYPE',1);
+  
+% default values
+switch type
+    case 'gaussian'
+        p2 = [3 3];  % siz
+        p3 = 0.5;    % std
+        
+    case 'median'
+        p2 = [3 3]; %siz
+        
+    case 'unsharp'
+        p2 = 1/5;    % alpha
+        
+end
+   
+
+switch nargin
+    case 1
+        % IMAGE_FILTER('gaussian')
+        % IMAGE_FILTER('median')
+        % IMAGE_FILTER('unsharp')
+        % Nothing to do here; the default values have 
+        % already been assigned.        
+        
+    case 2
+       % IMAGE_FILTER('gaussian',N)
+       % IMAGE_FILTER('median',N)
+      % IMAGE_FILTER('unsharp',ALPHA)
+       p2 = varargin{2};
+ 
+       switch type
+          case 'unsharp'
+              iptcheckinput(p2,{'double'},{'nonnegative','real',...
+                                  'nonempty','finite','scalar'},...
+                            mfilename,'ALPHA',2);
+              if  p2 > 1
+                  msg = sprintf('%s: ALPHA should be less than or equal 1 and greater than 0.', upper(mfilename));
+                  eid = sprintf('Images:%s:outOfRangeAlpha', mfilename);
+                  error(eid,msg);
+              end
+         case {'gaussian', 'median'}
+              iptcheckinput(p2,{'double'},...
+                            {'positive','finite','real','nonempty','integer'},...
+                            mfilename,'HSIZE',2);
+              if numel(p2) > 2
+                  msg = 'HSIZE should have 1 or 2 elements.';
+                  eid = sprintf('Images:%s:wrongSizeN', mfilename);
+                  error(eid,msg);
+              elseif numel(p2)==1
+                  p2 = [p2 p2]; 
+              end
+       end       
+
+       
+    case 3
+       % FSPECIAL('gaussian',N,SIGMA)
+       p2 = varargin{2};
+       p3 = varargin{3};
+       
+       switch type
+          case 'gaussian'
+              iptcheckinput(p2,{'double'},...
+                            {'positive','finite','real','nonempty','integer'},...
+                            mfilename,'N',2);
+              iptcheckinput(p3,{'double'},...
+                            {'positive','finite','real','nonempty','scalar'},...
+                            mfilename,'SIGMA',3);
+              if numel(p2) > 2
+                  msg = sprintf('%s: size(N) should be less than or equal 2.', upper(mfilename));
+                  eid = sprintf('Images:%s:wrongSizeN', mfilename);
+                  error(eid,msg);
+              elseif numel(p2)==1
+                  p2 = [p2 p2]; 
+              end
+          otherwise   
+              msg = sprintf('%s: Too many arguments for this type of filter.', upper(mfilename));
+              eid = sprintf('Images:%s:tooManyArgsForThisFilter', mfilename);
+              error(eid,msg);
+      end
+end
