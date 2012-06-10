@@ -1,8 +1,6 @@
-function pt_out = sampling(pt, PROB)
-% pt : [inf 3]
-if nargin == 1
-    PROB = 0.5;
-end
+function pt_out = sampling(pt)
+
+PROB = 0.8;
 
 [R C] = size(pt);
 pt_out = zeros(R,C);%approximation

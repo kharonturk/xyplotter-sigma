@@ -12,7 +12,6 @@ img_3 = filter_LSI(img_2, 'unsharp',1);
 img_4 = rgb2gray(img_3);
 
 img_edge = edge(img_4, 'canny',[],1);%, [0.04 0.4], 2);
-point = find_pt(img_edge);
 
 if strcmp(debug,'DEBUG')
     subplot(231);imshow(img);

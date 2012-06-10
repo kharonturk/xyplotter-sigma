@@ -66,9 +66,6 @@ while(point_empty)
     end
     if(strcmp(debug, 'DEBUG'))display('Passed second block!');end
     
-    % sampling point data to reduce information
-    point = sampling(point);
-    
     %
     % Send a Data Packet as occuring Interrupt.
     %
