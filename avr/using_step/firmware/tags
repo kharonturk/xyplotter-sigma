@@ -8,11 +8,11 @@
 AVRDUDE	Makefile	/^AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)$/;"	m
 B	motor.h	/^#define B /;"	d
 CLOCK	Makefile	/^CLOCK      = 16000000$/;"	m
-COMPILE	Makefile	/^COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)$/;"	m
+COMPILE	Makefile	/^COMPILE = avr-gcc -Wall -O1 -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)$/;"	m
 Cur	state.c	/^State* Cur;$/;"	v
 D	motor.h	/^#define D /;"	d
 DEVICE	Makefile	/^DEVICE     = atmega128$/;"	m
-DRAW	state.h	/^    DRAW $/;"	e	enum:STATE
+DRAW	state.h	/^    DRAW,$/;"	e	enum:STATE
 Draw	state.c	/^static State Draw;$/;"	v	file:
 FUSES	Makefile	/^FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m$/;"	m
 G	motor.h	/^#define G /;"	d
@@ -21,8 +21,10 @@ ISR	uart.c	/^ISR(USART1_RX_vect)$/;"	f
 Idle	state.c	/^static State Idle;$/;"	v	file:
 OBJECTS	Makefile	/^OBJECTS    = main.o uart.o motor.o state.o draw.o$/;"	m
 Obj	draw.c	/^volatile Point Obj;$/;"	v
+PICTURE	state.h	/^    PICTURE,$/;"	e	enum:STATE
 PROGRAMMER	Makefile	/^PROGRAMMER =  -c stk500v2 -P \/dev\/cu.usbserial-FTTLE5CL$/;"	m
 Pen	draw.c	/^volatile Point Pen;$/;"	v
+Picture	state.c	/^static State Picture;$/;"	v	file:
 Point	draw.h	/^} Point;$/;"	t	typeref:struct:point
 R	motor.h	/^#define R /;"	d
 STATE	state.h	/^enum STATE$/;"	g
@@ -52,6 +54,8 @@ do_nothing	state.c	/^void do_nothing(void) {$/;"	f	signature:(void)
 do_nothing	state.h	/^void do_nothing();$/;"	p	signature:()
 draw	draw.c	/^void draw()$/;"	f
 draw	draw.h	/^void draw();$/;"	p	signature:()
+draw_circle	draw.c	/^void draw_circle(int radious)$/;"	f	signature:(int radious)
+draw_circle	draw.h	/^void draw_circle();$/;"	p	signature:()
 draw_clean_up	state.c	/^void draw_clean_up()$/;"	f
 draw_clean_up	state.h	/^void draw_clean_up();$/;"	p	signature:()
 draw_initialize	state.c	/^void draw_initialize()$/;"	f
@@ -64,6 +68,8 @@ draw_rectangle	draw.c	/^void draw_rectangle(int length)$/;"	f	signature:(int len
 draw_rectangle	draw.h	/^void draw_rectangle();$/;"	p	signature:()
 draw_triangle	draw.c	/^void draw_triangle(int length)$/;"	f	signature:(int length)
 draw_triangle	draw.h	/^void draw_triangle();$/;"	p	signature:()
+getChar	uart.c	/^int getChar(FILE*f)$/;"	f	signature:(FILE*f)
+getChar	uart.h	/^int getChar(FILE* f);$/;"	p	signature:(FILE* f)
 idle_clean_up	state.c	/^void idle_clean_up(){$/;"	f
 idle_clean_up	state.h	/^void idle_clean_up();$/;"	p	signature:()
 idle_initialize	state.c	/^void idle_initialize()$/;"	f
@@ -78,6 +84,8 @@ initialize_draw	state.c	/^void initialize_draw()$/;"	f
 initialize_draw	state.h	/^void initialize_draw();$/;"	p	signature:()
 initialize_idle	state.c	/^void initialize_idle()$/;"	f
 initialize_idle	state.h	/^void initialize_idle();$/;"	p	signature:()
+initialize_picture	state.c	/^void initialize_picture()$/;"	f
+initialize_picture	state.h	/^void initialize_picture();$/;"	p	signature:()
 initialize_state	state.c	/^void initialize_state()$/;"	f
 initialize_state	state.h	/^void initialize_state();$/;"	p	signature:()
 lineBres_less_1	draw.c	/^void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)$/;"	f	signature:(int x0, int y0, int xEnd, int yEnd)
@@ -86,12 +94,20 @@ lineBres_more_1	draw.c	/^void lineBres_more_1(int x0, int y0, int xEnd, int yEnd
 lineBres_more_1	draw.h	/^void lineBres_more_1(int, int, int, int);$/;"	p	signature:(int, int, int, int)
 main	main.c	/^int main(void)$/;"	f	signature:(void)
 main_loop	state.h	/^    void (*main_loop)(void);$/;"	m	struct:state	access:public
+picture_clean_up	state.c	/^void picture_clean_up()$/;"	f
+picture_clean_up	state.h	/^void picture_clean_up();$/;"	p	signature:()
+picture_initialize	state.c	/^void picture_initialize()$/;"	f
+picture_initialize	state.h	/^void picture_initialize();$/;"	p	signature:()
+picture_main_loop	state.c	/^void picture_main_loop()$/;"	f
+picture_main_loop	state.h	/^void picture_main_loop();$/;"	p	signature:()
+picture_process_input	state.h	/^void picture_process_input(unsigned char);$/;"	p	signature:(unsigned char)
 point	draw.h	/^typedef struct point$/;"	s
 point::x	draw.h	/^    int x;$/;"	m	struct:point	access:public
 point::y	draw.h	/^    int y;$/;"	m	struct:point	access:public
 point_initialize	draw.c	/^void point_initialize(volatile Point *p, int x, int y)$/;"	f	signature:(volatile Point *p, int x, int y)
 point_initialize	draw.h	/^void point_initialize(volatile Point *p, int x, int y);$/;"	p	signature:(volatile Point *p, int x, int y)
-point_print	draw.c	/^void point_print(Point* p)$/;"	f	signature:(Point* p)
+point_print	draw.c	/^void point_print(volatile Point* p)$/;"	f	signature:(volatile Point* p)
+point_print	draw.h	/^void point_print(volatile Point* p);$/;"	p	signature:(volatile Point* p)
 process_input	state.h	/^    void (*process_input)(unsigned char );$/;"	m	struct:state	access:public
 putChar	uart.c	/^int putChar(char data, FILE* f)$/;"	f	signature:(char data, FILE* f)
 putChar	uart.h	/^int putChar(char data, FILE* f);$/;"	p	signature:(char data, FILE* f)
@@ -107,6 +123,10 @@ state::process_input	state.h	/^    void (*process_input)(unsigned char );$/;"	m	
 stop	motor.c	/^volatile unsigned int stop=1;$/;"	v
 uart_init	uart.c	/^void uart_init()$/;"	f
 uart_init	uart.h	/^void uart_init();$/;"	p	signature:()
+uart_receive	uart.c	/^unsigned char uart_receive()$/;"	f
+uart_receive	uart.h	/^unsigned char uart_receive();$/;"	p	signature:()
+uart_rx_intr_disable	uart.h	/^void uart_rx_intr_disable();$/;"	p	signature:()
+uart_rx_intr_enable	uart.h	/^void uart_rx_intr_enable();$/;"	p	signature:()
 uart_transmit	uart.c	/^void uart_transmit(unsigned char data)$/;"	f	signature:(unsigned char data)
 uart_transmit	uart.h	/^void uart_transmit(unsigned char);$/;"	p	signature:(unsigned char)
 x	draw.h	/^    int x;$/;"	m	struct:point	access:public

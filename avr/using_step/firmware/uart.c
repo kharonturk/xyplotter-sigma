@@ -16,12 +16,34 @@ void uart_init()
 {
     UCSR1B |= (1<<TXEN) | (1<<RXEN) | (1<<RXCIE1);
     UBRR1L = 8;
-    fdevopen(putChar,0);
+    fdevopen(putChar,getChar);
 }
 int putChar(char data, FILE* f)
 {
     uart_transmit(data);
     return 0;
+}
+int getChar(FILE*f)
+{
+    return uart_receive();
+}
+
+void uart_rx_intr_disable()
+{
+    UCSR1B &= ~(1<<RXCIE1);
+}
+
+void uart_rx_intr_enable()
+{
+    UCSR1B |= (1<<RXCIE1);
+}
+
+unsigned char uart_receive()
+{
+    while( !(UCSR1A & (1<<RXC1)))
+        ;
+
+    return UDR1;
 }
 
 void uart_transmit(unsigned char data)
