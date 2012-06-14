@@ -10,6 +10,8 @@ extern volatile unsigned int dir;
 extern volatile unsigned int stop;
 void cycle_forward(int cycle);
 void cycle_backward(int cycle);
+void cycle_forward2(int cycle);
+void cycle_backward2(int cycle);
 void set_dir(int i);
 
 void set_stop();
