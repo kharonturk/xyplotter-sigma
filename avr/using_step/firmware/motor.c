@@ -8,9 +8,12 @@
 volatile unsigned int dir=0;
 volatile unsigned int stop=1;
 extern volatile uint64_t count;
+void cycle_forward2(int cycle);
 
 void cycle_forward(int cycle)
 {
+    cycle_forward2(cycle);
+    PORTA = 0x0;
     int i=0;
     for(i = 0; i < cycle; i++) 
     {
@@ -23,6 +26,25 @@ void cycle_forward(int cycle)
         PORTA = ~(G|B);
         _delay_ms(2);
     }
+
+    PORTA = 0x0;
+}
+void cycle_forward2(int cycle)
+{
+    PORTC = 0xff;
+    int i=0;
+    for(i = 0; i < cycle; i++) 
+    {
+        PORTC = ~(B|D);
+        _delay_ms(2);
+        PORTC = ~(D|R);
+        _delay_ms(2);
+        PORTC = ~(R|G);
+        _delay_ms(2);
+        PORTC = ~(G|B);
+        _delay_ms(2);
+    }
+    PORTC = 0xff;
 
 }
 

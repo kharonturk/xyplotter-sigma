@@ -17,6 +17,9 @@ volatile uint64_t count = 0;
 int main(void)
 {
     DDRA = 0xff;
+    DDRC = 0xff;
+    PORTA=0x0;
+    PORTC = 0xff;
     PORTA = 0;
     DDRD = 0b11111000;
     uart_init();
@@ -25,7 +28,11 @@ int main(void)
     sei();
 
     for(;;){
-        while(stop) PORTA=0;
+        while(stop){
+         PORTA=0x00;
+         PORTC = 0xff;
+        }
+
         if(dir)
         {
             cycle_forward(100);
