@@ -2,6 +2,7 @@
 #include "state.h"
 #include "motor.h"
 #include "main.h"
+#include "draw.h"
 #include <avr/io.h>
 #include <stdio.h>
 
@@ -126,11 +127,9 @@ void draw_main_loop()
     stop = 0;
     while(!stop)
     {
-        cycle_backward(2000);
-        cycle_backward2(2000);
-        cycle_forward(2000);
-        cycle_forward2(2000);
+        draw_rectangle(2000);
     }
+
 }
 
 void draw_process_input(unsigned char c )

@@ -20,7 +20,7 @@
 DEVICE     = atmega128
 CLOCK      = 16000000
 PROGRAMMER =  -c stk500v2 -P /dev/cu.usbserial-FTTLE5CL
-OBJECTS    = main.o uart.o motor.o state.o
+OBJECTS    = main.o uart.o motor.o state.o draw.o
 FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m
 
 # ATMega8 fuse bits used above (fuse bits for other devices are different!):
