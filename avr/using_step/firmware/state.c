@@ -10,6 +10,7 @@ static State Idle;
 static State Draw;
 State* Cur;
 
+static idle_motor_num = 0;
 
 void initialize_state()
 {
@@ -68,11 +69,19 @@ void idle_main_loop()
 
     if(dir)
     {
-        cycle_forward(100);
+        if(idle_motor_num){
+            cycle_forward(100);
+        } else {
+            cycle_forward2(100);
+        }
     }
     else
     {
-        cycle_backward(100);
+        if(idle_motor_num){
+            cycle_backward(100);
+        } else {
+            cycle_backward2(100);
+        }
     }
     count += 1;
 }
@@ -93,8 +102,10 @@ void idle_process_input(unsigned char c)
         set_dir(0);
         UDR1 = 'b';
         stop = 0;
-    }
-    else if ( c == 's')
+    } else if ( c == 'n')
+    {
+        idle_motor_num ^= 1;
+    } else if ( c == 's')
     {
         set_stop();
         count = 0;

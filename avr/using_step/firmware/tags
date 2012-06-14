@@ -52,6 +52,8 @@ idle_clean_up	state.h	/^void idle_clean_up();$/;"	p	signature:()
 idle_initialize	state.c	/^void idle_initialize()$/;"	f
 idle_initialize	state.h	/^void idle_initialize();$/;"	p	signature:()
 idle_main_loop	state.c	/^void idle_main_loop()$/;"	f
+idle_main_loop	state.h	/^void idle_main_loop();$/;"	p	signature:()
+idle_motor_num	state.c	/^static idle_motor_num = 0;$/;"	v	file:
 idle_process_input	state.c	/^void idle_process_input(unsigned char c)$/;"	f	signature:(unsigned char c)
 idle_process_input	state.h	/^void idle_process_input(unsigned char);$/;"	p	signature:(unsigned char)
 initialize	state.h	/^    void (*initialize)(void);$/;"	m	struct:state	access:public
