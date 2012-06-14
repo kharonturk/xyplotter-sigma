@@ -20,6 +20,8 @@ void draw()
     diff.y = Obj.y - Pen.y;
     diff.y = abs(diff.y);
 
+    point_print(&Pen);
+    point_print(&Obj);
 
     if ( diff.x >= diff.y)
     {
@@ -66,6 +68,7 @@ void lineBres_more_1(int x0, int y0, int xEnd, int yEnd) // reverse x, y
         y_dir = 1;
     }
 
+    printf("more\r\n");
     // assert now is x0, y0
 
     while( x < xEnd )
@@ -119,10 +122,7 @@ void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)
         y_dir = 1;
     }
 
-    printf("x_dir is %d\r\n", x_dir);
-    printf("y_dir is %d\r\n", x_dir);
-    point_print(&Pen);
-    point_print(&Obj);
+    printf("less\r\n");
     // assert now is x0, y0
 
     while( x < xEnd )
@@ -191,6 +191,11 @@ void draw_triangle(int length)
     printf("Now is %d, %d\r\n",-length,0);
 
 
+}
+
+void draw_circle(int radious)
+{
+//
 }
 
 void point_print(volatile Point* p)

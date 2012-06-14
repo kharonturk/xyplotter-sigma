@@ -4,6 +4,7 @@
 
 void draw_rectangle();
 void draw_triangle();
+void draw_circle();
 
 typedef struct point
 {

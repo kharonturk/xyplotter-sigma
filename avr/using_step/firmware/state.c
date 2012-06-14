@@ -68,17 +68,17 @@ void idle_main_loop()
     if(dir)
     {
         if(idle_motor_num){
-            cycle_forward(100);
+            cycle_forward(10);
         } else {
-            cycle_forward2(100);
+            cycle_forward2(10);
         }
     }
     else
     {
         if(idle_motor_num){
-            cycle_backward(100);
+            cycle_backward(10);
         } else {
-            cycle_backward2(100);
+            cycle_backward2(10);
         }
     }
     count += 1;
@@ -130,8 +130,9 @@ void draw_main_loop()
 
     while(!stop)
     {
+        draw_circle();
         draw_triangle(500);
-//        draw_rectangle(200);
+        draw_rectangle(200);
     }
 
 }

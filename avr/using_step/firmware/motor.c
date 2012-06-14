@@ -13,7 +13,7 @@ void cycle_forward(int cycle)
 {
     PORTA = 0x0;
     int i=0;
-    for(i = 0; i < cycle; i++) 
+    for(i = 0; i < cycle*2; i++) 
     {
         PORTA = ~(B|D);
         _delay_ms(2);
@@ -31,7 +31,7 @@ void cycle_forward2(int cycle)
 {
     PORTC = 0xff;
     int i=0;
-    for(i = 0; i < cycle; i++) 
+    for(i = 0; i < cycle*2; i++) 
     {
         PORTC = ~(B|D);
         _delay_ms(2);
@@ -50,7 +50,7 @@ void cycle_forward2(int cycle)
 void cycle_backward(int cycle)
 {
     int i=0;
-    for(i = 0; i < cycle; i++) 
+    for(i = 0; i < cycle*2; i++) 
     {
         PORTA = ~(G|B);
         _delay_ms(2);
@@ -66,7 +66,7 @@ void cycle_backward(int cycle)
 void cycle_backward2(int cycle)
 {
     int i=0;
-    for(i = 0; i < cycle; i++) 
+    for(i = 0; i < cycle*2; i++) 
     {
         PORTC = ~(G|B);
         _delay_ms(2);
