@@ -43,16 +43,16 @@ void initialize_idle()
     Idle.initialize = idle_initialize;
     Idle.main_loop = idle_main_loop;
     Idle.process_input = idle_process_input;
-    Idle.clean_up = do_nothing;
+    Idle.clean_up = idle_clean_up;
 }
 
 void initialize_draw()
 {
 
     Draw.initialize = draw_initialize;
-    Draw.main_loop = do_nothing;
-    Draw.process_input = do_not_hear;
-    Draw.clean_up = do_nothing;
+    Draw.main_loop = draw_main_loop;
+    Draw.process_input = draw_process_input;
+    Draw.clean_up = draw_clean_up;
 }
 
 void idle_initialize()
@@ -62,10 +62,7 @@ void idle_initialize()
 
 void idle_main_loop()
 {
-    while(stop){
-        PORTA=0x00;
-        PORTC = 0xff;
-    }
+    if(stop) return;
 
     if(dir)
     {
@@ -112,9 +109,44 @@ void idle_process_input(unsigned char c)
     }
 }
 
+void idle_clean_up(){
+    set_stop();
+}
+
 void draw_initialize()
 {
     printf("Here is draw state!\r\n");
+}
+
+void draw_main_loop()
+{
+    cycle_forward(1000);
+    cycle_forward2(1000);
+
+    stop = 0;
+    while(!stop)
+    {
+        cycle_backward(2000);
+        cycle_backward2(2000);
+        cycle_forward(2000);
+        cycle_forward2(2000);
+    }
+}
+
+void draw_process_input(unsigned char c )
+{
+    if( c == 'i')
+    {
+        change_state(IDLE);
+    } else if ( c == 's')
+    {
+        set_stop();
+    }
+
+}
+void draw_clean_up()
+{
+    set_stop();
 }
 
 void do_nothing(void) {

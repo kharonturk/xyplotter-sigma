@@ -48,6 +48,9 @@ do_nothing	state.h	/^void do_nothing();$/;"	p	signature:()
 draw_clean_up	state.h	/^void draw_clean_up();$/;"	p	signature:()
 draw_initialize	state.c	/^void draw_initialize()$/;"	f
 draw_initialize	state.h	/^void draw_initialize();$/;"	p	signature:()
+draw_main_loop	state.c	/^void draw_main_loop()$/;"	f
+draw_main_loop	state.h	/^void draw_main_loop();$/;"	p	signature:()
+draw_process_input	state.h	/^void draw_process_input(unsigned char);$/;"	p	signature:(unsigned char)
 idle_clean_up	state.h	/^void idle_clean_up();$/;"	p	signature:()
 idle_initialize	state.c	/^void idle_initialize()$/;"	f
 idle_initialize	state.h	/^void idle_initialize();$/;"	p	signature:()

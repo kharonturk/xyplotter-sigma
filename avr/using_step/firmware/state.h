@@ -35,8 +35,10 @@ void idle_clean_up();
 void draw_clean_up();
 
 void idle_main_loop();
+void draw_main_loop();
 
 void idle_process_input(unsigned char);
+void draw_process_input(unsigned char);
 
 void do_nothing();
 void do_not_hear(unsigned char);
