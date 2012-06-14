@@ -51,6 +51,7 @@ do_not_hear	state.h	/^void do_not_hear(unsigned char);$/;"	p	signature:(unsigned
 do_nothing	state.c	/^void do_nothing(void) {$/;"	f	signature:(void)
 do_nothing	state.h	/^void do_nothing();$/;"	p	signature:()
 draw	draw.c	/^void draw()$/;"	f
+draw	draw.h	/^void draw();$/;"	p	signature:()
 draw_clean_up	state.c	/^void draw_clean_up()$/;"	f
 draw_clean_up	state.h	/^void draw_clean_up();$/;"	p	signature:()
 draw_initialize	state.c	/^void draw_initialize()$/;"	f
@@ -62,6 +63,7 @@ draw_process_input	state.h	/^void draw_process_input(unsigned char);$/;"	p	signa
 draw_rectangle	draw.c	/^void draw_rectangle(int length)$/;"	f	signature:(int length)
 draw_rectangle	draw.h	/^void draw_rectangle();$/;"	p	signature:()
 draw_triangle	draw.c	/^void draw_triangle(int length)$/;"	f	signature:(int length)
+draw_triangle	draw.h	/^void draw_triangle();$/;"	p	signature:()
 idle_clean_up	state.c	/^void idle_clean_up(){$/;"	f
 idle_clean_up	state.h	/^void idle_clean_up();$/;"	p	signature:()
 idle_initialize	state.c	/^void idle_initialize()$/;"	f
@@ -79,13 +81,17 @@ initialize_idle	state.h	/^void initialize_idle();$/;"	p	signature:()
 initialize_state	state.c	/^void initialize_state()$/;"	f
 initialize_state	state.h	/^void initialize_state();$/;"	p	signature:()
 lineBres_less_1	draw.c	/^void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)$/;"	f	signature:(int x0, int y0, int xEnd, int yEnd)
+lineBres_less_1	draw.h	/^void lineBres_less_1(int, int, int, int);$/;"	p	signature:(int, int, int, int)
 lineBres_more_1	draw.c	/^void lineBres_more_1(int x0, int y0, int xEnd, int yEnd) \/\/ reverse x, y$/;"	f	signature:(int x0, int y0, int xEnd, int yEnd)
+lineBres_more_1	draw.h	/^void lineBres_more_1(int, int, int, int);$/;"	p	signature:(int, int, int, int)
 main	main.c	/^int main(void)$/;"	f	signature:(void)
 main_loop	state.h	/^    void (*main_loop)(void);$/;"	m	struct:state	access:public
 point	draw.h	/^typedef struct point$/;"	s
 point::x	draw.h	/^    int x;$/;"	m	struct:point	access:public
 point::y	draw.h	/^    int y;$/;"	m	struct:point	access:public
-point_initialize	draw.c	/^void point_initialize(Point *p, int x, int y)$/;"	f	signature:(Point *p, int x, int y)
+point_initialize	draw.c	/^void point_initialize(volatile Point *p, int x, int y)$/;"	f	signature:(volatile Point *p, int x, int y)
+point_initialize	draw.h	/^void point_initialize(volatile Point *p, int x, int y);$/;"	p	signature:(volatile Point *p, int x, int y)
+point_print	draw.c	/^void point_print(Point* p)$/;"	f	signature:(Point* p)
 process_input	state.h	/^    void (*process_input)(unsigned char );$/;"	m	struct:state	access:public
 putChar	uart.c	/^int putChar(char data, FILE* f)$/;"	f	signature:(char data, FILE* f)
 putChar	uart.h	/^int putChar(char data, FILE* f);$/;"	p	signature:(char data, FILE* f)

@@ -130,7 +130,8 @@ void draw_main_loop()
 
     while(!stop)
     {
-        draw_rectangle(200);
+        draw_triangle(500);
+//        draw_rectangle(200);
     }
 
 }

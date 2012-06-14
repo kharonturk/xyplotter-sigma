@@ -11,7 +11,6 @@ volatile Point Obj;
 void draw()
 {
     Point diff;
-    float m;
     if ( (Pen.x == Obj.x)
             && (Pen.y == Obj.y))
         return;
@@ -22,7 +21,7 @@ void draw()
     diff.y = abs(diff.y);
 
 
-    if ( diff.x > diff.y)
+    if ( diff.x >= diff.y)
     {
         lineBres_less_1(Pen.x, Pen.y, Obj.x, Obj.y);
         Pen.x = Obj.x; Pen.y = Obj.y;
@@ -30,7 +29,15 @@ void draw()
 
     else
     {
-        lineBres_more_1(Pen.y, Pen.x, Obj.y, Obj.x);
+        if ( Pen.x > Obj.x )
+            cycle_backward(Pen.x - Obj.x);
+        else
+            cycle_forward(Obj.x - Pen.x);
+        if ( Pen.y > Obj.y )
+            cycle_backward2(Pen.y - Obj.y);
+        else
+            cycle_forward2(Obj.y - Pen.y);
+//        lineBres_more_1(Pen.y, Pen.x, Obj.y, Obj.x);
         Pen.x = Obj.x; Pen.y = Obj.y;
     }
 
@@ -39,48 +46,48 @@ void draw()
 void lineBres_more_1(int x0, int y0, int xEnd, int yEnd) // reverse x, y
 {
 
-    int dx = xEnd - x0, dy = yEnd-y0;
-    dx = abs(dx); dy = abs(dy);
-    int p = 2 * dy - dx;
-    int twoDy = 2 * dy, twoDyMinusDx = 2 * ( dy - dx );
-    int x, y;
-    int dir = 0;
-
-    if ( x0 > xEnd ) {
-        x = xEnd;
-        y = yEnd;
-        xEnd = x0;
-        dir = 0;
-    }
-
-    else {
-        x = x0;
-        y = y0;
-        dir = 1;
-    }
-
-    // assert now is x0, y0
-
-    while( x < xEnd )
-    {
-        x++;
-
-        if ( p < 0 ){
-            p += twoDy;
-            if (dir)
-                cycle_forward2(1);
-            else
-                cycle_backward2(1);
-        }
-        else {
-            y++;
-            if (dir)
-                cycle_forward(1);
-            else
-                cycle_backward(1);
-            p += twoDyMinusDx;
-        }
-    }
+//    int dx = xEnd - x0, dy = yEnd-y0;
+//    dx = abs(dx); dy = abs(dy);
+//    int p = 2 * dy - dx;
+//    int twoDy = 2 * dy, twoDyMinusDx = 2 * ( dy - dx );
+//    int x, y;
+//    int dir = 0;
+//
+//    if ( x0 > xEnd ) {
+//        x = xEnd;
+//        y = yEnd;
+//        xEnd = x0;
+//        dir = 0;
+//    }
+//
+//    else {
+//        x = x0;
+//        y = y0;
+//        dir = 1;
+//    }
+//
+//    // assert now is x0, y0
+//
+//    while( x < xEnd )
+//    {
+//        x++;
+//        if (dir)
+//            cycle_forward2(1);
+//        else
+//            cycle_backward2(1);
+//
+//        if ( p < 0 ){
+//            p += twoDy;
+//        }
+//        else {
+//            y++;
+//            if (dir)
+//                cycle_forward(1);
+//            else
+//                cycle_backward(1);
+//            p += twoDyMinusDx;
+//        }
+//    }
 }
 
 void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)
@@ -89,38 +96,49 @@ void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)
     dx = abs(dx); dy = abs(dy);
     int p = 2 * dy - dx;
     int twoDy = 2 * dy, twoDyMinusDx = 2 * ( dy - dx );
-    int x, y;
-    int dir = 0;
+    int x, y=0;
+    int x_dir = 0, y_dir = 0;
 
     if ( x0 > xEnd ) {
         x = xEnd;
-        y = yEnd;
         xEnd = x0;
-        dir = 0;
+        x_dir = 0;
     }
 
     else {
         x = x0;
-        y = y0;
-        dir = 1;
+        x_dir = 1;
     }
 
+    if ( y0 > yEnd)
+    {
+        y_dir = 0;
+    }
+    else  // y < yEnd
+    {
+        y_dir = 1;
+    }
+
+    printf("x_dir is %d\r\n", x_dir);
+    printf("y_dir is %d\r\n", x_dir);
+    point_print(&Pen);
+    point_print(&Obj);
     // assert now is x0, y0
 
     while( x < xEnd )
     {
         x++;
+        if (x_dir)
+            cycle_forward(1);
+        else
+            cycle_backward(1);
 
         if ( p < 0 ) {
             p += twoDy;
-            if (dir)
-                cycle_forward(1);
-            else
-                cycle_backward(1);
         }
         else {
             y++;
-            if (dir)
+            if (y_dir)
                 cycle_forward2(1);
             else
                 cycle_backward2(1);
@@ -159,5 +177,21 @@ void draw_rectangle(int length)
 
 void draw_triangle(int length)
 {
+    printf("Draw triangle ! \r\n ");
+    point_initialize(&Obj, -length,0);
+    draw();
+    printf("Now is %d, %d\r\n",-length,0);
 
+    point_initialize(&Obj, 0,length);
+    draw();
+    printf("Now is %d, %d\r\n",0,length);
+
+    point_initialize(&Obj, length,0);
+    draw();
+    printf("Now is %d, %d\r\n",length,0);
+}
+
+void point_print(volatile Point* p)
+{
+    printf("(%d, %d)\r\n", p->x,p->y);
 }
