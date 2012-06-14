@@ -1,5 +1,5 @@
 function Rtn = conv_LSI(img, mask)
-
+% Rtn = conv_LSI(img, mask)
 [R_m C_m] = size(mask);% R by R
 
 img = double(img);

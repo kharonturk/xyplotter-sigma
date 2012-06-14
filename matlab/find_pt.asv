@@ -1,5 +1,4 @@
 function point_out = find_pt(img)
-% point_out = find_pt(img)
 % img is logical image file
 % and find nearest point, start from origin (0, 0).
 % as find point, we remove that point from the register data matrix and
@@ -44,5 +43,3 @@ end
 
 [~, idx] = find_element(point_out(:,1:2),[0 0]);
 point_out = point_out(1:idx-1,:);
-
-close(h);

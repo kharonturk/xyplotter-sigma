@@ -1,6 +1,11 @@
-function pt_out = sampling(pt)
-
-PROB = 0.8;
+function pt_out = sampling(pt, PROB)
+% pt_out = sampling(pt)
+% default Sampling Probability = 0.8
+if nargin == 1
+    CUTOFF_PROB = SAMPLE_PROB;
+elseif nargin == 2
+    CUTOFF_PROB = PROB;
+end
 
 [R C] = size(pt);
 pt_out = zeros(R,C);%approximation
@@ -9,7 +14,7 @@ for i=1:R
     if(pt(i,3)==0)
         pt_out(i,:) = pt(i,:);
     else
-        pt_out(i,:) = (rand<=PROB).*pt(i,:);
+        pt_out(i,:) = (rand<=CUTOFF_PROB).*pt(i,:);
     end
 end
 
