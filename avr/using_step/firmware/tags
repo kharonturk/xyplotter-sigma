@@ -1,0 +1,107 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+-format	Makefile	/^	avr-size --format=avr --mcu=$(DEVICE) main.elf$/;"	m
+AVRDUDE	Makefile	/^AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)$/;"	m
+B	motor.h	/^#define B /;"	d
+CLOCK	Makefile	/^CLOCK      = 16000000$/;"	m
+COMPILE	Makefile	/^COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)$/;"	m
+Cur	state.c	/^State* Cur;$/;"	v
+D	motor.h	/^#define D /;"	d
+DEVICE	Makefile	/^DEVICE     = atmega128$/;"	m
+DRAW	state.h	/^    DRAW $/;"	e	enum:STATE
+Draw	state.c	/^static State Draw;$/;"	v	file:
+FUSES	Makefile	/^FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m$/;"	m
+G	motor.h	/^#define G /;"	d
+IDLE	state.h	/^    IDLE=0,$/;"	e	enum:STATE
+ISR	uart.c	/^ISR(USART1_RX_vect)$/;"	f
+Idle	state.c	/^static State Idle;$/;"	v	file:
+OBJECTS	Makefile	/^OBJECTS    = main.o uart.o motor.o state.o draw.o$/;"	m
+Obj	draw.c	/^volatile Point Obj;$/;"	v
+PROGRAMMER	Makefile	/^PROGRAMMER =  -c stk500v2 -P \/dev\/cu.usbserial-FTTLE5CL$/;"	m
+Pen	draw.c	/^volatile Point Pen;$/;"	v
+Point	draw.h	/^} Point;$/;"	t	typeref:struct:point
+R	motor.h	/^#define R /;"	d
+STATE	state.h	/^enum STATE$/;"	g
+State	state.h	/^typedef struct state State;$/;"	t	typeref:struct:state
+_PLOTTER_DRAW_H_	draw.h	/^#define _PLOTTER_DRAW_H_$/;"	d
+_PLOTTER_MAIN_H_	main.h	/^#define _PLOTTER_MAIN_H_$/;"	d
+_PLOTTER_MOTOR_H_	motor.h	/^#define _PLOTTER_MOTOR_H_$/;"	d
+_PLOTTER_STATE_H_	state.h	/^#define _PLOTTER_STATE_H_$/;"	d
+_PLOTTER_UART_H_	uart.h	/^#define _PLOTTER_UART_H_$/;"	d
+abs	draw.c	/^#define abs(/;"	d	file:
+change_state	state.c	/^void change_state(enum STATE s)$/;"	f	signature:(enum STATE s)
+change_state	state.h	/^void change_state(enum STATE s);$/;"	p	signature:(enum STATE s)
+clean_up	state.h	/^    void (*clean_up)(void);$/;"	m	struct:state	access:public
+count	main.c	/^volatile uint64_t count = 0;$/;"	v
+cycle_backward	motor.c	/^void cycle_backward(int cycle)$/;"	f	signature:(int cycle)
+cycle_backward	motor.h	/^void cycle_backward(int cycle);$/;"	p	signature:(int cycle)
+cycle_backward2	motor.c	/^void cycle_backward2(int cycle)$/;"	f	signature:(int cycle)
+cycle_backward2	motor.h	/^void cycle_backward2(int cycle);$/;"	p	signature:(int cycle)
+cycle_forward	motor.c	/^void cycle_forward(int cycle)$/;"	f	signature:(int cycle)
+cycle_forward	motor.h	/^void cycle_forward(int cycle);$/;"	p	signature:(int cycle)
+cycle_forward2	motor.c	/^void cycle_forward2(int cycle)$/;"	f	signature:(int cycle)
+cycle_forward2	motor.h	/^void cycle_forward2(int cycle);$/;"	p	signature:(int cycle)
+dir	motor.c	/^volatile unsigned int dir=0;$/;"	v
+do_not_hear	state.c	/^void do_not_hear(unsigned char c){};$/;"	f	signature:(unsigned char c)
+do_not_hear	state.h	/^void do_not_hear(unsigned char);$/;"	p	signature:(unsigned char)
+do_nothing	state.c	/^void do_nothing(void) {$/;"	f	signature:(void)
+do_nothing	state.h	/^void do_nothing();$/;"	p	signature:()
+draw	draw.c	/^void draw()$/;"	f
+draw_clean_up	state.c	/^void draw_clean_up()$/;"	f
+draw_clean_up	state.h	/^void draw_clean_up();$/;"	p	signature:()
+draw_initialize	state.c	/^void draw_initialize()$/;"	f
+draw_initialize	state.h	/^void draw_initialize();$/;"	p	signature:()
+draw_main_loop	state.c	/^void draw_main_loop()$/;"	f
+draw_main_loop	state.h	/^void draw_main_loop();$/;"	p	signature:()
+draw_process_input	state.c	/^void draw_process_input(unsigned char c )$/;"	f	signature:(unsigned char c )
+draw_process_input	state.h	/^void draw_process_input(unsigned char);$/;"	p	signature:(unsigned char)
+draw_rectangle	draw.c	/^void draw_rectangle(int length)$/;"	f	signature:(int length)
+draw_rectangle	draw.h	/^void draw_rectangle();$/;"	p	signature:()
+draw_triangle	draw.c	/^void draw_triangle(int length)$/;"	f	signature:(int length)
+idle_clean_up	state.c	/^void idle_clean_up(){$/;"	f
+idle_clean_up	state.h	/^void idle_clean_up();$/;"	p	signature:()
+idle_initialize	state.c	/^void idle_initialize()$/;"	f
+idle_initialize	state.h	/^void idle_initialize();$/;"	p	signature:()
+idle_main_loop	state.c	/^void idle_main_loop()$/;"	f
+idle_main_loop	state.h	/^void idle_main_loop();$/;"	p	signature:()
+idle_motor_num	state.c	/^static idle_motor_num = 0;$/;"	v	file:
+idle_process_input	state.c	/^void idle_process_input(unsigned char c)$/;"	f	signature:(unsigned char c)
+idle_process_input	state.h	/^void idle_process_input(unsigned char);$/;"	p	signature:(unsigned char)
+initialize	state.h	/^    void (*initialize)(void);$/;"	m	struct:state	access:public
+initialize_draw	state.c	/^void initialize_draw()$/;"	f
+initialize_draw	state.h	/^void initialize_draw();$/;"	p	signature:()
+initialize_idle	state.c	/^void initialize_idle()$/;"	f
+initialize_idle	state.h	/^void initialize_idle();$/;"	p	signature:()
+initialize_state	state.c	/^void initialize_state()$/;"	f
+initialize_state	state.h	/^void initialize_state();$/;"	p	signature:()
+lineBres_less_1	draw.c	/^void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)$/;"	f	signature:(int x0, int y0, int xEnd, int yEnd)
+lineBres_more_1	draw.c	/^void lineBres_more_1(int x0, int y0, int xEnd, int yEnd) \/\/ reverse x, y$/;"	f	signature:(int x0, int y0, int xEnd, int yEnd)
+main	main.c	/^int main(void)$/;"	f	signature:(void)
+main_loop	state.h	/^    void (*main_loop)(void);$/;"	m	struct:state	access:public
+point	draw.h	/^typedef struct point$/;"	s
+point::x	draw.h	/^    int x;$/;"	m	struct:point	access:public
+point::y	draw.h	/^    int y;$/;"	m	struct:point	access:public
+point_initialize	draw.c	/^void point_initialize(Point *p, int x, int y)$/;"	f	signature:(Point *p, int x, int y)
+process_input	state.h	/^    void (*process_input)(unsigned char );$/;"	m	struct:state	access:public
+putChar	uart.c	/^int putChar(char data, FILE* f)$/;"	f	signature:(char data, FILE* f)
+putChar	uart.h	/^int putChar(char data, FILE* f);$/;"	p	signature:(char data, FILE* f)
+set_dir	motor.c	/^void set_dir(int i)$/;"	f	signature:(int i)
+set_dir	motor.h	/^void set_dir(int i);$/;"	p	signature:(int i)
+set_stop	motor.c	/^void set_stop()$/;"	f
+set_stop	motor.h	/^void set_stop();$/;"	p	signature:()
+state	state.h	/^struct state$/;"	s
+state::clean_up	state.h	/^    void (*clean_up)(void);$/;"	m	struct:state	access:public
+state::initialize	state.h	/^    void (*initialize)(void);$/;"	m	struct:state	access:public
+state::main_loop	state.h	/^    void (*main_loop)(void);$/;"	m	struct:state	access:public
+state::process_input	state.h	/^    void (*process_input)(unsigned char );$/;"	m	struct:state	access:public
+stop	motor.c	/^volatile unsigned int stop=1;$/;"	v
+uart_init	uart.c	/^void uart_init()$/;"	f
+uart_init	uart.h	/^void uart_init();$/;"	p	signature:()
+uart_transmit	uart.c	/^void uart_transmit(unsigned char data)$/;"	f	signature:(unsigned char data)
+uart_transmit	uart.h	/^void uart_transmit(unsigned char);$/;"	p	signature:(unsigned char)
+x	draw.h	/^    int x;$/;"	m	struct:point	access:public
+y	draw.h	/^    int y;$/;"	m	struct:point	access:public
