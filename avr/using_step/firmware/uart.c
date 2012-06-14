@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "uart.h"
 #include "motor.h"
+#include "state.h"
 
 
 extern volatile uint64_t count;
@@ -36,24 +37,6 @@ ISR(USART1_RX_vect)
 {
     unsigned char c;
     c = UDR1;
-
-    if(c == 'f')
-    {
-        set_dir(1);
-        UDR1 = 'f';
-        stop = 0;
-    }
-    else if ( c == 'b')
-    {
-        set_dir(0);
-        UDR1 = 'b';
-        stop = 0;
-    }
-    else if ( c == 's')
-    {
-        set_stop();
-        count = 0;
-    }
-
+    Cur->process_input(c);
 }
 

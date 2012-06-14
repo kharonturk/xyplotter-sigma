@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include "uart.h"
 #include "motor.h"
+#include "state.h"
 
 
 volatile uint64_t count = 0;
@@ -23,25 +24,14 @@ int main(void)
     PORTA = 0;
     DDRD = 0b11111000;
     uart_init();
+    
+    initialize_state();
     printf("Hello Plotter!\r\n");
 
     sei();
 
     for(;;){
-        while(stop){
-         PORTA=0x00;
-         PORTC = 0xff;
-        }
-
-        if(dir)
-        {
-            cycle_forward(100);
-        }
-        else
-        {
-            cycle_backward(100);
-        }
-        count += 1;
+        Cur->main_loop();
     }
     return 0;   /* never reached */
 }
