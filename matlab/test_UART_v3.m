@@ -1,4 +1,5 @@
 function test_UART_v3(DATA_NUM, debug)
+% test_UART_v3(DATA_NUM, debug)
 % start interrupt : 1(%d)
 % require point information interrupt : 2(%d)
 if nargin == 1

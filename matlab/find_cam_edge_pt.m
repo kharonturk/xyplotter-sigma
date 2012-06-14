@@ -1,8 +1,9 @@
 function point = find_cam_edge_pt(start)
+% point = find_cam_edge_pt(start)
 
 if(start)
     try
-        vid = videoinput('winvideo', 1, 'YUY2_640x480');
+        vid = videoinput(ADAPTORNAME, DEVICEID, FORMAT);
         %        vid = videoinput('winvideo', 2, 'RGB24_640x480');%Modify as computer
         
         display('3');

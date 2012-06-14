@@ -1,9 +1,13 @@
 function captureEdgeData_v2(DATA_NUM, debug)
+% captureEdgeData_v2(DATA_NUM, debug)
 % start interrupt : 1(%d)
 % require point information interrupt : 2(%d)
 if nargin == 1
     debug = '';
 end
+
+START_INT = 1;%character
+SEND_INT = 2;
 
 COMPORT = 'COM13';
 BaudRate = 115200;
@@ -24,18 +28,18 @@ while(point_empty)
     while(~start)
         try
             reply = fscanf(s1, '%d\n');
-            % please send data with a format fprintf('%d\n',1) or
-            % fprintf('%s\n','1')
+            % please send data with a format fprintf('%d\n',START_INT) or
+            % fprintf('%s\n','START_INT')
         catch err
             display(err);
             fclose(s1);
             break;
         end
         if(strcmp(debug, 'DEBUG'))display(reply);end
-        if reply == 1
+        if reply == START_INT
             start = 1;
             if(strcmp(debug, 'DEBUG'))display('Started.');end
-        elseif reply == 2
+        elseif reply == SEND_INT
             try
                 dummy = zeros(3,DATA_NUM);
                 fprintf(s1, '%d\n', dummy);
@@ -43,7 +47,7 @@ while(point_empty)
                 display(err);
                 fclose(s1);
             end
-            if(strcmp(debug, 'DEBUG'))display('Please press 1.');end
+            if(strcmp(debug, 'DEBUG'))display('Please give me a START_IN.');end
         end
     end
     if(strcmp(debug, 'DEBUG'))display('Passed first block!');end
@@ -53,7 +57,8 @@ while(point_empty)
     %
     try
         if(start)
-            point = find_cam_edge_pt(start);
+            point = [randi(2,15,1)-1, randi(2,15,1)-1, randi(2,15,1)-1];
+%             point = find_cam_edge_pt(start);
             display(point);
         else
             point = [];
@@ -76,7 +81,7 @@ while(point_empty)
             if(strcmp(debug, 'DEBUG'))display(interrupt);end
             if(strcmp(debug, 'DEBUG'))display('Received Interrupt!');end
 
-            if (interrupt == 2)
+            if (interrupt == SEND_INT)
                 if(size(point,2) < DATA_NUM)
                     zero = zeros(3, DATA_NUM - size(point,2));%fill insufficient data packet to zeros.
                     point_end = [point zero];
@@ -100,7 +105,7 @@ while(point_empty)
             break;
         end
     end
-    display('Passed all block! give me a 1');
+    display('Passed all block! give me a START_INT');
 
 
     start = 0;

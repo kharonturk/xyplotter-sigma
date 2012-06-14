@@ -1,4 +1,5 @@
 function data_out = remove_from_data(data, pt)
+% data_out = remove_from_data(data, pt)
 % remove element from the data.
 % if there is not, data_out is preserved.
 % but there is a element in data, data_out is the data except the pt,i.e. selected element data.

@@ -1,7 +1,5 @@
 function [next_pt touch] = nearest_pt(data, pt)
-
-DISTANCE_LIMIT = 2;
-
+% [next_pt touch] = nearest_pt(data, pt)
 [L ~] = size(data);
 
 data_dist = data - [pt(1).*ones(L,1) pt(2).*ones(L,1)];
