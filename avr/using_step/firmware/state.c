@@ -116,18 +116,21 @@ void idle_clean_up(){
 
 void draw_initialize()
 {
+    set_stop();
     printf("Here is draw state!\r\n");
+    stop = 0;
+//    cycle_forward(1000);
+    //cycle_forward2(1000);
+    point_initialize(&Pen, 0,0);
+    point_initialize(&Obj, 0,0);
 }
 
 void draw_main_loop()
 {
-    cycle_forward(1000);
-    cycle_forward2(1000);
 
-    stop = 0;
     while(!stop)
     {
-        draw_rectangle(2000);
+        draw_rectangle(200);
     }
 
 }
