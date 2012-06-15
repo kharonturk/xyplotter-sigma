@@ -1,4 +1,5 @@
 function point_out = find_pt(img)
+% point_out = find_pt(img)
 % img is logical image file
 % and find nearest point, start from origin (0, 0).
 % as find point, we remove that point from the register data matrix and
@@ -14,16 +15,29 @@ function point_out = find_pt(img)
 data = [x y];
 [L ~] = size(data);
 
-point_out = zeros(L, 3);
+point_out = zeros(L+floor(L/2), 3);
 current_pt = [0 0];
+
+offset = 0;
 
 h = waitbar(0,'Please wait...');
 
-for i=1:L
+for i=1:L+L/2
     if(isempty(data))
+        if(distance(start_pt, current_pt) < DISTANCE_LIMIT)
+            point_out(i+offset,:) = [start_pt 1];
+            offset = offset+1;
+        end
         break;
     end
     [next_pt touch] = nearest_pt(data, current_pt);
+    if touch==0
+        if (i~= 1 && distance(start_pt, current_pt) < DISTANCE_LIMIT)
+            point_out(i+offset,:) = [start_pt 1];
+            offset = offset+1;
+        end
+        start_pt = next_pt
+    end
     
     data = remove_from_data(data,current_pt+[-1 0]);
     data = remove_from_data(data,current_pt+[-1 1]);
@@ -36,10 +50,16 @@ for i=1:L
     data = remove_from_data(data,current_pt);
     
     current_pt = next_pt;
-    point_out(i,:) = [next_pt touch];
+    point_out(i+offset,:) = [next_pt touch];
     
     waitbar(i/L);
 end
+offset
+point_out(1:10,:)
+point_out(end-10:end,:)
+[~, idx] = find_element(point_out(2:end,1:2),[0 0]);
+point_out = point_out(1:idx,:);
 
-[~, idx] = find_element(point_out(:,1:2),[0 0]);
-point_out = point_out(1:idx-1,:);
+point_out(1:10,:)
+point_out(end-10:end,:) 
+close(h);

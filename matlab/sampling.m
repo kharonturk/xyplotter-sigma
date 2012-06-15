@@ -10,12 +10,13 @@ end
 [R C] = size(pt);
 pt_out = zeros(R,C);%approximation
 
-for i=1:R
-    if(pt(i,3)==0)
+for i=1:R-1
+    if(pt(i,3)==0 || pt(i+1,3)==0)
         pt_out(i,:) = pt(i,:);
     else
         pt_out(i,:) = (rand<=CUTOFF_PROB).*pt(i,:);
     end
 end
+pt_out(end,:) = pt(end,:);
 
 pt_out = delete_zero_vector(pt_out);

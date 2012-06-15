@@ -10,7 +10,7 @@
                 BAUD 115200
                 FOSC 14.7456
 ****************************/
-#define DATA_NUM 7 //The number of data packet : one packet = [1 3] matrix
+#define DATA_NUM 1 //The number of data packet : one packet = [1 3] matrix
 
 
 /*************************
@@ -18,6 +18,7 @@
 *************************/
 int arr[100][3];//packer buffer
 int idx = 0;//buffer index
+char c = 0;
 
 
 /******************************
@@ -88,13 +89,13 @@ int main(void)
 ***************************/
 SIGNAL(SIG_INTERRUPT7)
 {
-        fprintf(&myStream,"%d\n",1);
+        fprintf(&myStream,"%c\n",'s');
 }
 
 SIGNAL(SIG_INTERRUPT6)
 {
 	int i=0;
-    fprintf(&myStream,"%d\n",2);
+    fprintf(&myStream,"%c\n",'d');
 
 	for(i = 0 ; i < DATA_NUM; i++)
 	        fscanf(&myStream, "%d %d %d", &arr[i][0], &arr[i][1], &arr[i][2]);
@@ -108,4 +109,8 @@ SIGNAL(SIG_INTERRUPT5)
 		PORTC = 0x00;
 	
 	idx++;
+}
+SIGNAL(SIG_UART0_RECV)
+{
+	fscanf(&myStream,"%s", &c);
 }
