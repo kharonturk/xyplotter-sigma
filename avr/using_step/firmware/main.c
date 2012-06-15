@@ -24,9 +24,11 @@ int main(void)
     PORTA = 0;
     DDRD = 0b11111000;
     uart_init();
+
+    printf("x\n");
     
     initialize_state();
-    printf("Hello Plotter!\r\n");
+//    printf("Hello Plotter!\r\n");
 
     sei();
 

@@ -28,6 +28,7 @@ Picture	state.c	/^static State Picture;$/;"	v	file:
 Point	draw.h	/^} Point;$/;"	t	typeref:struct:point
 R	motor.h	/^#define R /;"	d
 STATE	state.h	/^enum STATE$/;"	g
+ServerReady	state.c	/^static volatile char ServerReady;$/;"	v	file:
 State	state.h	/^typedef struct state State;$/;"	t	typeref:struct:state
 _PLOTTER_DRAW_H_	draw.h	/^#define _PLOTTER_DRAW_H_$/;"	d
 _PLOTTER_MAIN_H_	main.h	/^#define _PLOTTER_MAIN_H_$/;"	d
@@ -47,6 +48,8 @@ cycle_forward	motor.c	/^void cycle_forward(int cycle)$/;"	f	signature:(int cycle
 cycle_forward	motor.h	/^void cycle_forward(int cycle);$/;"	p	signature:(int cycle)
 cycle_forward2	motor.c	/^void cycle_forward2(int cycle)$/;"	f	signature:(int cycle)
 cycle_forward2	motor.h	/^void cycle_forward2(int cycle);$/;"	p	signature:(int cycle)
+dat_received	state.c	/^static unsigned char dat_received;$/;"	v	file:
+data	state.c	/^static unsigned char data[16];$/;"	v	file:
 dir	motor.c	/^volatile unsigned int dir=0;$/;"	v
 do_not_hear	state.c	/^void do_not_hear(unsigned char c){};$/;"	f	signature:(unsigned char c)
 do_not_hear	state.h	/^void do_not_hear(unsigned char);$/;"	p	signature:(unsigned char)
@@ -70,6 +73,7 @@ draw_triangle	draw.c	/^void draw_triangle(int length)$/;"	f	signature:(int lengt
 draw_triangle	draw.h	/^void draw_triangle();$/;"	p	signature:()
 getChar	uart.c	/^int getChar(FILE*f)$/;"	f	signature:(FILE*f)
 getChar	uart.h	/^int getChar(FILE* f);$/;"	p	signature:(FILE* f)
+get_data	state.c	/^void get_data(char* buf)$/;"	f	signature:(char* buf)
 idle_clean_up	state.c	/^void idle_clean_up(){$/;"	f
 idle_clean_up	state.h	/^void idle_clean_up();$/;"	p	signature:()
 idle_initialize	state.c	/^void idle_initialize()$/;"	f
@@ -100,6 +104,7 @@ picture_initialize	state.c	/^void picture_initialize()$/;"	f
 picture_initialize	state.h	/^void picture_initialize();$/;"	p	signature:()
 picture_main_loop	state.c	/^void picture_main_loop()$/;"	f
 picture_main_loop	state.h	/^void picture_main_loop();$/;"	p	signature:()
+picture_process_input	state.c	/^void picture_process_input(unsigned char c)$/;"	f	signature:(unsigned char c)
 picture_process_input	state.h	/^void picture_process_input(unsigned char);$/;"	p	signature:(unsigned char)
 point	draw.h	/^typedef struct point$/;"	s
 point::x	draw.h	/^    int x;$/;"	m	struct:point	access:public
@@ -111,10 +116,12 @@ point_print	draw.h	/^void point_print(volatile Point* p);$/;"	p	signature:(volat
 process_input	state.h	/^    void (*process_input)(unsigned char );$/;"	m	struct:state	access:public
 putChar	uart.c	/^int putChar(char data, FILE* f)$/;"	f	signature:(char data, FILE* f)
 putChar	uart.h	/^int putChar(char data, FILE* f);$/;"	p	signature:(char data, FILE* f)
+servo_init	servo.c	/^void servo_init()$/;"	f
 set_dir	motor.c	/^void set_dir(int i)$/;"	f	signature:(int i)
 set_dir	motor.h	/^void set_dir(int i);$/;"	p	signature:(int i)
 set_stop	motor.c	/^void set_stop()$/;"	f
 set_stop	motor.h	/^void set_stop();$/;"	p	signature:()
+size	state.c	/^static unsigned char size = 0;$/;"	v	file:
 state	state.h	/^struct state$/;"	s
 state::clean_up	state.h	/^    void (*clean_up)(void);$/;"	m	struct:state	access:public
 state::initialize	state.h	/^    void (*initialize)(void);$/;"	m	struct:state	access:public
@@ -125,9 +132,12 @@ uart_init	uart.c	/^void uart_init()$/;"	f
 uart_init	uart.h	/^void uart_init();$/;"	p	signature:()
 uart_receive	uart.c	/^unsigned char uart_receive()$/;"	f
 uart_receive	uart.h	/^unsigned char uart_receive();$/;"	p	signature:()
+uart_rx_intr_disable	uart.c	/^void uart_rx_intr_disable()$/;"	f
 uart_rx_intr_disable	uart.h	/^void uart_rx_intr_disable();$/;"	p	signature:()
+uart_rx_intr_enable	uart.c	/^void uart_rx_intr_enable()$/;"	f
 uart_rx_intr_enable	uart.h	/^void uart_rx_intr_enable();$/;"	p	signature:()
 uart_transmit	uart.c	/^void uart_transmit(unsigned char data)$/;"	f	signature:(unsigned char data)
 uart_transmit	uart.h	/^void uart_transmit(unsigned char);$/;"	p	signature:(unsigned char)
+us_100	servo.c	/^static unsigned int us_100;$/;"	v	file:
 x	draw.h	/^    int x;$/;"	m	struct:point	access:public
 y	draw.h	/^    int y;$/;"	m	struct:point	access:public

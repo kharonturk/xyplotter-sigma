@@ -7,7 +7,11 @@
 #include <avr/io.h>
 #include <stdio.h>
 
+static volatile unsigned char data[16];
+static volatile unsigned char size = 0;
+static volatile unsigned char data_received;
 
+static volatile char ServerReady;
 static State Idle;
 static State Draw;
 static State Picture;
@@ -20,6 +24,7 @@ void initialize_state()
     initialize_draw();
     initialize_idle();
     initialize_picture();
+
 
     Cur = &Idle;
     Cur->initialize();
@@ -66,7 +71,7 @@ void initialize_picture()
 {
     Picture.initialize = picture_initialize;
     Picture.main_loop = picture_main_loop;
-    Picture.process_input = do_not_hear;
+    Picture.process_input = picture_process_input;
     Picture.clean_up = picture_clean_up;
 }
 
@@ -74,38 +79,89 @@ void picture_initialize()
 {
     //uart rx interrupt disable;
     set_stop();
-    uart_rx_intr_disable();
+//    uart_rx_intr_disable();
     point_initialize(&Pen, 0,0);
     point_initialize(&Obj, 0,0);
-    printf("Picture mode Start!");
+    ServerReady = 0;
+    data_received = 0;
+//    printf("Picture mode Start!");
 }
 
 void picture_main_loop()
 {
     char buffer[16];
     int arr[3];
-    while(1)
-    {
-        scanf("%c",buffer);
-        if ( buffer[0] == 'r')
-            break;
-    }
+
+    while ( ServerReady == 0);
 
     while(1)
     {
-        scanf("%d %d %d",&arr[0], &arr[1], &arr[2]);
+        printf("d\n");
+//        scanf("%d %d %d",&arr[0], &arr[1], &arr[2]);
+        
+        get_data(arr);
+    //    printf("%d %d %d\n",arr[0], arr[1], arr[2]);
         if ( arr[2] == -1) break;
         point_initialize(&Obj, arr[0], arr[1]);
         draw();
-        printf("d");
     }
 
     change_state(IDLE);
 
 }
+
 void picture_clean_up()
 {
-    uart_rx_intr_enable();
+//    uart_rx_intr_enable();
+}
+void get_data(int * buf)
+{
+    while(1) 
+        if ( data_received == 1) break;;
+
+    data_received = 0;
+    if ( 3 > sscanf(data, "%d %d %d", &buf[0], &buf[1], &buf[2]))
+    {
+        printf("%d\n");
+        return get_data(buf);   
+    };
+
+    return;
+}
+
+void picture_process_input(unsigned char c)
+{
+    static unsigned char start = 0;
+
+    if ( ServerReady == 0)
+    {
+        if ( c != 'r')
+        {
+            return;
+        }
+        ServerReady = 1;
+    }
+    if ( start == 0)
+    {
+        if ( c != 'S')
+        {
+            return;
+        }
+        start = 1;
+    }
+
+    else
+    {
+        if ( c == 'E')
+        {
+            data[size] = 0;
+            start = 0;
+            size = 0;
+            data_received = 1;
+            return;
+        }
+        data[size++] = c;   
+    }
 }
 
 void idle_initialize()
@@ -173,7 +229,7 @@ void idle_clean_up(){
 void draw_initialize()
 {
     set_stop();
-    printf("Here is draw state!\r\n");
+    //printf("Here is draw state!\r\n");
     stop = 0;
 //    cycle_forward(1000);
     //cycle_forward2(1000);

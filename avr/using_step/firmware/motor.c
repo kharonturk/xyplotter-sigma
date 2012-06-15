@@ -88,7 +88,7 @@ void set_dir(int i)
 
 void set_stop()
 {
-    printf("Hello Plotter! count is %ld \r\n", count);
+//    printf("Hello Plotter! count is %ld \r\n", count);
     PORTA = 0;
     PORTC = 0xff;
     stop = 1;

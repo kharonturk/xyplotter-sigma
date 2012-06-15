@@ -49,5 +49,7 @@ void picture_process_input(unsigned char);
 void do_nothing();
 void do_not_hear(unsigned char);
 
+void get_data(int* buf);
+
 #endif
 

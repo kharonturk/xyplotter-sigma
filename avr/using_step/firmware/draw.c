@@ -20,8 +20,8 @@ void draw()
     diff.y = Obj.y - Pen.y;
     diff.y = abs(diff.y);
 
-    point_print(&Pen);
-    point_print(&Obj);
+//    point_print(&Pen);
+//    point_print(&Obj);
 
     if ( diff.x >= diff.y)
     {
@@ -68,7 +68,7 @@ void lineBres_more_1(int x0, int y0, int xEnd, int yEnd) // reverse x, y
         y_dir = 1;
     }
 
-    printf("more\r\n");
+//    printf("more\r\n");
     // assert now is x0, y0
 
     while( x < xEnd )
@@ -122,7 +122,7 @@ void lineBres_less_1(int x0, int y0, int xEnd, int yEnd)
         y_dir = 1;
     }
 
-    printf("less\r\n");
+//    printf("less\r\n");
     // assert now is x0, y0
 
     while( x < xEnd )
