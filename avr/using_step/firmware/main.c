@@ -19,9 +19,8 @@ int main(void)
 {
     DDRA = 0xff;
     DDRC = 0xff;
-    PORTA=0x0;
+    PORTA=0xff;
     PORTC = 0xff;
-    PORTA = 0;
     DDRD = 0b11111000;
     uart_init();
 
